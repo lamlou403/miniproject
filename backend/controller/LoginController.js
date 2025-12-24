@@ -1,7 +1,7 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt'); // 1. Import de bcrypt indispensable
-
+require('dotenv').config();
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -31,7 +31,7 @@ const login = async (req, res) => {
         userId: user._id,
         nom: user.nom
       }, 
-      'VOTRE_CLE_SECRETE', 
+      process.env.jwt_secret, 
       { expiresIn: '24h' }
     );
 
