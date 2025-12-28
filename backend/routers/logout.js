@@ -5,10 +5,9 @@ const router = express.Router();
 const { logout } = require("../controller/LogoutController");
 
 // 2. Import du middleware qui vérifie si l'utilisateur est bien connecté avant de le déconnecter
-const { logedin } = require("../auth/LoginAuth");
 
 // 3. Route POST pour la déconnexion
 // On vérifie d'abord si l'utilisateur est loggé, puis on exécute le logout
-router.post("/", logedin, logout);
+router.post("/", logout);
 
 module.exports = router;

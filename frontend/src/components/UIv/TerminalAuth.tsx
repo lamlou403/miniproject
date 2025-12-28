@@ -226,8 +226,10 @@ const styles = `
     font-weight: bold;
   }
 `;
-
+import { login, signin } from "@/API/Auth";
+import useStore from "@/store/store";
 export default function TerminalAuth({ isLoginx }: { isLoginx: boolean }) {
+  const store = useStore();
   const [isLogin, setIsLogin] = useState(isLoginx);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -259,8 +261,12 @@ export default function TerminalAuth({ isLoginx }: { isLoginx: boolean }) {
 
     if (isLogin) {
       // Validation for login
-      if (!username.trim()) {
+      if (!email.trim()) {
         setError("Username required");
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        setError("Invalid email format");
         return;
       }
       if (!password) {
@@ -269,17 +275,18 @@ export default function TerminalAuth({ isLoginx }: { isLoginx: boolean }) {
       }
 
       setIsLoading(true);
-
-      // Simulate authentication
-      setTimeout(() => {
-        if (username.toLowerCase() === "admin" && password === "password") {
-          console.log("Login successful");
-        } else {
-          setError("Invalid credentials");
-          setPassword("");
-        }
+      try {
+        const x = await login(email, password);
+        console.log(x);
+        store.setAccessToken(x.token);
+        store.setUser(x.user);
         setIsLoading(false);
-      }, 1000);
+      } catch (e) {
+        setError("Invalid credentials");
+        setPassword("");
+        setIsLoading(false);
+      }
+      // Simulate authentication
     } else {
       // Validation for signup
       if (!prenom.trim()) {
@@ -308,10 +315,8 @@ export default function TerminalAuth({ isLoginx }: { isLoginx: boolean }) {
       }
 
       setIsLoading(true);
-
-      // Simulate account creation
-      setTimeout(() => {
-        console.log("Account created:", { prenom, nom, email, dateNaissance });
+      try {
+        const x = await signin(nom, prenom, dateNaissance, email, password);
         setError("");
         setPrenom("");
         setNom("");
@@ -320,7 +325,9 @@ export default function TerminalAuth({ isLoginx }: { isLoginx: boolean }) {
         setDateNaissance("");
         setIsLogin(true);
         setIsLoading(false);
-      }, 1000);
+      } catch (e) {
+        setError("Error");
+      }
     }
   };
 
@@ -437,12 +444,12 @@ export default function TerminalAuth({ isLoginx }: { isLoginx: boolean }) {
               <>
                 {/* Username Input */}
                 <div className="input-group">
-                  <label className="input-label">User Name</label>
+                  <label className="input-label">Email</label>
                   <input
                     ref={inputRef}
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     disabled={isLoading}
                     className="form-input w-full"
                     placeholder="Enter username..."
@@ -451,7 +458,7 @@ export default function TerminalAuth({ isLoginx }: { isLoginx: boolean }) {
 
                 {/* Password Input */}
                 <div className="input-group">
-                  <label className="input-label">Pass Word</label>
+                  <label className="input-label">PassWord</label>
                   <input
                     type="password"
                     value={password}
@@ -506,7 +513,7 @@ export default function TerminalAuth({ isLoginx }: { isLoginx: boolean }) {
 
                 {/* Password Input */}
                 <div className="input-group">
-                  <label className="input-label">Pass Word</label>
+                  <label className="input-label">PassWord</label>
                   <input
                     type="password"
                     value={password}

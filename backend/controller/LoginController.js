@@ -1,7 +1,7 @@
-const User = require('../models/User');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt'); // 1. Import de bcrypt indispensable
-require('dotenv').config();
+const User = require("../models/User");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt"); // 1. Import de bcrypt indispensable
+require("dotenv").config();
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -11,7 +11,7 @@ const login = async (req, res) => {
     const user = await User.findOne({ email: email });
     console.log("Utilisateur trouvé :", user);
     if (!user) {
-      return res.status(404).json({ message: "L'utilisateur n'existe pas" });
+      return res.status(400).json({ message: "L'utilisateur n'existe pas" });
     }
 
     // 2. Vérifier le mot de passe avec bcrypt.compare
@@ -22,30 +22,34 @@ const login = async (req, res) => {
       return res.status(401).json({ message: "Mot de passe incorrect" });
     }
 
-
     // ----------------------------------------------------------------------------------
 
     // 3. Générer le Token JWT
     const token = jwt.sign(
-      { 
-        userId: user._id,
-        nom: user.nom
-      }, 
-      process.env.jwt_secret, 
-      { expiresIn: '24h' }
+      {
+        id: user._id,
+        nom: user.nom,
+        prenom: user.prenom,
+      },
+      process.env.jwt_secret,
+      { expiresIn: "24h" }
     );
 
-    // 5. Réponse
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+      maxAge: 3600000,
+    });
     res.status(200).json({
       message: "Connexion réussie",
       token: token,
       user: {
         id: user._id,
         nom: user.nom,
-        prenom: user.prenom
-      }
+        prenom: user.prenom,
+      },
     });
-
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Erreur serveur" });
