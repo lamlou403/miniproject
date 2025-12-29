@@ -1,20 +1,6 @@
 import { create } from "zustand";
 import axios from "axios";
-function clearAllCookies(): void {
-  try {
-    const cookies = document.cookie.split(";");
 
-    for (const cookie of cookies) {
-      const eqPos = cookie.indexOf("=");
-      const name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
-      // Expire the cookie for all paths
-      document.cookie = `${name.trim()}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
-    }
-    console.log("All cookies cleared.");
-  } catch (error) {
-    console.error("Error clearing cookies:", error);
-  }
-}
 // 1. Axios Instance with Credentials
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL,

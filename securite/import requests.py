@@ -332,7 +332,7 @@ def print_report(report):
     print("\n" + "="*60)
 
 
-# Exemple d'utilisation
+
 if __name__ == "__main__":
     target_url = "https://beginners-tutorials.info/"
     
