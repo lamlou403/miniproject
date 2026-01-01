@@ -6,7 +6,7 @@ const cookieParser = require("cookie-parser");
 mongoose
   .connect(process.env.url, {})
   .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.log(err));
+  .catch((err) => console.log("error connection", err));
 app.use(express.json());
 const cors = require("cors");
 app.use(cookieParser());
