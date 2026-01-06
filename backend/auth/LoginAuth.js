@@ -1,22 +1,22 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 const logedin = (req, res, next) => {
-  // 1. Vérifier si l'utilisateur est connecté via la session
-  if (req.session && req.session.user) {
-    return next(); // L'utilisateur est loggé, on continue
-  }
-
+  console.log(req.cookies.token);
   // 2. Sinon, vérifier s'il y a un token JWT dans les headers
-  const token = req.headers.authorization?.split(' ')[1]; // Format: "Bearer TOKEN"
-
+  const token = req.cookies.token; // Format: "Bearer TOKEN"
+  console.log("token", token);
   if (!token) {
-    return res.status(401).json({ message: "Accès refusé : utilisateur non connecté" });
+    console.log("token is not present");
+    return res
+      .status(401)
+      .json({ message: "Accès refusé : utilisateur non connecté" });
   }
 
   try {
     // 3. Valider le token
-    const verified = jwt.verify(token,'VOTRE_CLE_SECRETE');
+    const verified = jwt.verify(token, process.env.jwt_secret);
     req.user = verified;
+    console.log(verified);
     next();
   } catch (error) {
     res.status(400).json({ message: "Token invalide" });

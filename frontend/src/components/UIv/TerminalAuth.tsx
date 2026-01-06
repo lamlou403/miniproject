@@ -4,38 +4,38 @@ import { useNavigate } from "react-router-dom";
 // CSS animations with hacker aesthetic
 const styles = `
   @keyframes glitchAuth {
-    0% { 
+    0% {
       text-shadow: -3px 0 #00ff41, 3px 0 #ff006e;
       transform: translate(0);
     }
-    20% { 
+    20% {
       text-shadow: 3px 0 #00ff41, -3px 0 #ff006e;
       transform: translate(-2px, 2px);
     }
-    40% { 
+    40% {
       text-shadow: -3px 0 #00ff41, 3px 0 #ff006e;
       transform: translate(2px, -2px);
     }
-    60% { 
+    60% {
       text-shadow: 3px 0 #ff006e, -3px 0 #00ff41;
       transform: translate(-2px, 2px);
     }
-    80% { 
+    80% {
       text-shadow: -3px 0 #ff006e, 3px 0 #00ff41;
       transform: translate(2px, -2px);
     }
-    100% { 
+    100% {
       text-shadow: 3px 0 #00ff41, -3px 0 #ff006e;
       transform: translate(0);
     }
   }
 
   @keyframes titleGlow {
-    0%, 100% { 
+    0%, 100% {
       text-shadow: 0 0 10px rgba(0, 255, 65, 0.8),
                    0 0 20px rgba(0, 255, 65, 0.6);
     }
-    50% { 
+    50% {
       text-shadow: 0 0 20px rgba(0, 255, 65, 1),
                    0 0 40px rgba(0, 255, 65, 0.8);
     }
@@ -74,13 +74,13 @@ const styles = `
   }
 
   @keyframes pulse-glow {
-    0%, 100% { 
-      box-shadow: 0_0_20px_rgba(0, 255, 65, 0.5), 
-                  inset_0_0_0_2px_rgba(0, 255, 65, 0.5); 
+    0%, 100% {
+      box-shadow: 0_0_20px_rgba(0, 255, 65, 0.5),
+                  inset_0_0_0_2px_rgba(0, 255, 65, 0.5);
     }
-    50% { 
-      box-shadow: 0_0_40px_rgba(0, 255, 65, 0.8), 
-                  inset_0_0_0_2px_rgba(0, 255, 65, 0.8); 
+    50% {
+      box-shadow: 0_0_40px_rgba(0, 255, 65, 0.8),
+                  inset_0_0_0_2px_rgba(0, 255, 65, 0.8);
     }
   }
 
@@ -328,6 +328,7 @@ export default function TerminalAuth({ isLoginx }: { isLoginx: boolean }) {
         setIsLoading(false);
       } catch (e) {
         setError("Error");
+        setIsLoading(false);
       }
     }
   };
@@ -555,8 +556,8 @@ export default function TerminalAuth({ isLoginx }: { isLoginx: boolean }) {
                     ? "Authenticating..."
                     : "Creating..."
                   : isLogin
-                  ? "Login"
-                  : "Create Account"}
+                    ? "Login"
+                    : "Create Account"}
               </span>
               <div
                 className="absolute inset-0 bg-gradient-to-r from-transparent via-green-400 to-transparent opacity-0 hover:opacity-20"
