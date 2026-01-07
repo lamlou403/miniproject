@@ -13,12 +13,12 @@ from pymongo import MongoClient
 
 warnings.filterwarnings("ignore", message="Unverified HTTPS request")
 
-# Configuration
-NATS_SERVER = "nats://localhost:4222"  # Modifier selon votre config
-NATS_SUBJECT = "security.scan"  # Sujet NATS à écouter
-MONGO_URI = "mongodb://localhost:27017"  # Modifier selon votre config
-MONGO_DB = "security_db"  # Nom de votre base de données
-MONGO_COLLECTION = "scans"  # Nom de votre collection
+
+NATS_SERVER = "nats://localhost:4222"  g
+NATS_SUBJECT = "security.scan"
+MONGO_URI = "mongodb://localhost:27017"
+MONGO_DB = "security_db"
+MONGO_COLLECTION = "analyses"
 
 
 def scan_website(url, timeout=10):
