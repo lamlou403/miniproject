@@ -14,7 +14,7 @@ from pymongo import MongoClient
 warnings.filterwarnings("ignore", message="Unverified HTTPS request")
 
 
-NATS_SERVER = "nats://localhost:4222"  g
+NATS_SERVER = "nats://localhost:4222"
 NATS_SUBJECT = "security.scan"
 MONGO_URI = "mongodb://localhost:27017"
 MONGO_DB = "security_db"
