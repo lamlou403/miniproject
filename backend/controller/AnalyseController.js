@@ -1,7 +1,7 @@
 // Vérifiez si votre dossier s'appelle 'models' ou 'model'
 // Si le contrôleur est dans /controller et le modèle dans /models :
 const Analyse = require("../models/Analyse");
-
+const { send } = require("../Singletons/natSingleton.js");
 // 1. Ajouter une nouvelle analyse
 const SetAnalyse = async (req, res) => {
   try {
@@ -24,6 +24,9 @@ const SetAnalyse = async (req, res) => {
     });
 
     const savedAnalyse = await nouvelleAnalyse.save();
+    send(url, savedAnalyse._id)
+      .then()
+      .catch((err) => console.error(err));
     res.status(201).json(savedAnalyse);
   } catch (error) {
     res

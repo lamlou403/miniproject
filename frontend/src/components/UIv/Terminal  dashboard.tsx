@@ -246,6 +246,7 @@ const styles = `
   }
 `;
 function Addlink() {
+  const navigate = useNavigate();
   const [link, setlink] = useState("");
   const [error, setError] = useState(false); // New error state
 
@@ -264,6 +265,7 @@ function Addlink() {
       addLink(link)
         .then(() => {
           console.log("Link added successfully");
+          navigate("/dashboard/link");
         })
         .catch((error) => {
           console.error("Error adding link:", error);
@@ -338,7 +340,7 @@ const AllLinks = () => {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  });
   const displayLinks = Links;
   return (
     <div className="w-full mt-10 overflow-hidden">
@@ -364,7 +366,7 @@ const AllLinks = () => {
                 className="p-4 font-bold"
                 style={{ textShadow: "0 0 8px rgba(0, 255, 65, 0.6)" }}
               >
-                {link.score}
+                {link.data ? link.data.security_score + "%" : "N/A"}
               </td>
               <td className="p-4">
                 <div className="flex justify-center gap-4">
