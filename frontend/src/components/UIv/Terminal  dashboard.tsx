@@ -330,8 +330,10 @@ interface Linkdata {
   score: number;
   done: boolean;
 }
+
 const AllLinks = () => {
   const [Links, setLinks] = useState<Linkdata[]>([]);
+  const navigate = useNavigate();
   useEffect(() => {
     getAllLinks()
       .then((data) => {
@@ -342,6 +344,7 @@ const AllLinks = () => {
       });
   });
   const displayLinks = Links;
+
   return (
     <div className="w-full mt-10 overflow-hidden">
       <table className="w-full border-collapse vt323-regular">
@@ -374,7 +377,11 @@ const AllLinks = () => {
                   <button
                     disabled={!link.done}
                     className="disabled:opacity-50 px-3 py-1 border border-[#00ff41] hover:bg-[#00ff41] hover:text-black transition-all duration-300 uppercase text-sm tracking-tighter"
-                    onClick={() => console.log("Downloading...", link.id)}
+                    onClick={() =>
+                      navigate(`/dashboard/rapport/${link._id}`, {
+                        push: true,
+                      })
+                    }
                   >
                     [ DL ]
                   </button>
