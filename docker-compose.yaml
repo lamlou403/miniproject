@@ -1,1 +1,102 @@
-soon
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: miniproject-backend
+    ports:
+      - "3000:3000"
+    environment:
+      - NATS_URL=nats://nats:4222
+      - NODE_ENV=production
+      - PORT=3000
+      - url=mongodb://mongo:27017/miniproject
+      - fronturl=http://localhost:3001
+    depends_on:
+      - mongo
+      - nats
+    networks:
+      - miniproject-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://backend:3000/api"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: miniproject-frontend
+    ports:
+      - "3001:80"
+    depends_on:
+      - backend
+    networks:
+      - miniproject-network
+    restart: unless-stopped
+    environment:
+      - VITE_API_URL=http://backend:3000
+
+  securite:
+    build:
+      context: ./securite
+      dockerfile: Dockerfile
+    container_name: miniproject-securite
+    ports:
+      - "5001:5000"
+    environment:
+      - NATS_SERVER=nats://nats:4222
+      - MONGO_URI=mongodb://mongo:27017/miniproject
+      - MONGO_DB=miniproject
+    depends_on:
+      - mongo
+      - nats
+    networks:
+      - miniproject-network
+    restart: unless-stopped
+
+  mongo:
+    image: mongo:latest
+    container_name: miniproject-mongo
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=miniproject
+    volumes:
+      - mongo_data:/data/db
+      - mongo_config:/data/configdb
+    networks:
+      - miniproject-network
+    restart: unless-stopped
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  nats:
+    image: nats:latest
+    container_name: miniproject-nats
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    networks:
+      - miniproject-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "nc", "-zv", "localhost", "4222"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+networks:
+  miniproject-network:
+    driver: bridge
+
+volumes:
+  mongo_data:
+  mongo_config:

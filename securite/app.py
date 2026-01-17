@@ -10,14 +10,14 @@ import requests
 from bson.objectid import ObjectId
 from nats.aio.client import Client as NATS
 from pymongo import MongoClient
-
+import os
 warnings.filterwarnings("ignore", message="Unverified HTTPS request")
 
 
-NATS_SERVER = "nats://localhost:4222"
+NATS_SERVER = os.environ["NATS_SERVER"]
 NATS_SUBJECT = "security.scan"
-MONGO_URI = "mongodb+srv://ahmed:ahmed@db.31erz7q.mongodb.net/db?appName=db"
-MONGO_DB = "db"
+MONGO_URI = os.environ["MONGO_URI"]
+MONGO_DB = os.environ["MONGO_DB"]
 MONGO_COLLECTION = "analyses"
 
 

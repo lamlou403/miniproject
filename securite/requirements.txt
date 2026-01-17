@@ -1,4 +1,3 @@
 requests
 nats-py
-bson
 pymongo

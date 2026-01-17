@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {
   Shield,
   AlertTriangle,
@@ -235,27 +236,27 @@ const SecurityReport = () => {
             <div class="ssl-info">
               <div class="ssl-item">
                 <span class="ssl-label">Émetteur:</span>
-                ${reportData.ssl_info.issuer.commonName}
+                ${reportData.ssl_info?.issuer?.commonName ?? "N/A"}
               </div>
               <div class="ssl-item">
                 <span class="ssl-label">Organisation:</span>
-                ${reportData.ssl_info.issuer.organizationName}
+                ${reportData.ssl_info?.issuer?.organizationName ?? "N/A"}
               </div>
               <div class="ssl-item">
                 <span class="ssl-label">Pays:</span>
-                ${reportData.ssl_info.issuer.countryName}
+                ${reportData.ssl_info?.issuer?.countryName ?? "N/A"}
               </div>
               <div class="ssl-item">
                 <span class="ssl-label">Valide du:</span>
-                ${reportData.ssl_info.notBefore}
+                ${reportData.ssl_info?.notBefore ?? "N/A"}
               </div>
               <div class="ssl-item">
                 <span class="ssl-label">Valide jusqu'au:</span>
-                ${reportData.ssl_info.notAfter}
+                ${reportData.ssl_info?.notAfter ?? "N/A"}
               </div>
               <div class="ssl-item">
                 <span class="ssl-label">Version:</span>
-                ${reportData.ssl_info.version}
+                ${reportData.ssl_info?.version ?? "N/A"}
               </div>
             </div>
           </div>
@@ -408,7 +409,7 @@ const SecurityReport = () => {
               <div>
                 <span className="font-semibold text-green-900">Émetteur:</span>
                 <p className="text-green-700">
-                  {reportData.ssl_info.issuer.commonName}
+                  {reportData.ssl_info?.issuer?.commonName ?? "N/A"}
                 </p>
               </div>
               <div>
@@ -416,20 +417,22 @@ const SecurityReport = () => {
                   Organisation:
                 </span>
                 <p className="text-green-700">
-                  {reportData.ssl_info.issuer.organizationName}
+                  {reportData.ssl_info?.issuer?.organizationName ?? "N/A"}
                 </p>
               </div>
               <div>
                 <span className="font-semibold text-green-900">Valide du:</span>
                 <p className="text-green-700">
-                  {reportData.ssl_info.notBefore}
+                  {reportData.ssl_info?.notBefore ?? "N/A"}
                 </p>
               </div>
               <div>
                 <span className="font-semibold text-green-900">
                   Valide jusqu'au:
                 </span>
-                <p className="text-green-700">{reportData.ssl_info.notAfter}</p>
+                <p className="text-green-700">
+                  {reportData.ssl_info?.notAfter ?? "N/A"}
+                </p>
               </div>
             </div>
           </div>

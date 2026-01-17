@@ -10,6 +10,7 @@ mongoose
 app.use(express.json());
 const cors = require("cors");
 app.use(cookieParser());
+console.log(process.env.fronturl);
 app.use(cors({ origin: process.env.fronturl, credentials: true }));
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
